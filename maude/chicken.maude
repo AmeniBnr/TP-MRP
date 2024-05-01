@@ -1,0 +1,25 @@
+mod PROB is
+    sort Object .
+    sorts OneSideState GlobalState .
+
+    subsort Object < OneSideState .
+
+    ops Chicken Farmer Fox Grain nil : -> Object [ctor] .
+    op __ : OneSideState OneSideState -> OneSideState [ctor assoc comm id: nil] .
+    op _:_ : OneSideState OneSideState -> GlobalState [ctor] .
+    op eat(_,_) : Object Object -> Bool [ctor comm] .
+
+    ***who can eat the other. Note that this operator is commutative just to make implementation easier.
+    vars X Y Z : Object .
+    eq eat(Chicken , Grain) = true .
+    eq eat(Fox , Chicken) = true .
+    eq eat(X , Y) = false [owise] .
+
+    ***how to travel
+    var OST : OneSideState .
+
+    crl Farmer X Y Z : OST => Y Z : Farmer X OST if not eat(Y, Z) .
+    crl OST : Farmer X Y Z  => Farmer X OST : Y Z if not eat(Y, Z) .
+endm
+
+search in PROB : Farmer Chicken Fox Grain : nil =>*  nil : Farmer Chicken Fox Grain .

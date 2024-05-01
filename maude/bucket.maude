@@ -1,0 +1,36 @@
+mod bucket is
+  ***import integers without modification
+  pr INT .
+
+  ***declare a type named State
+  sort State .
+
+  ***the constructur of the state
+  op [_,_] : Int Int -> State [ctor] .
+
+  ***this is a constant for the initial state (to ease specificaiton only).
+  op init : -> State .
+  eq init = [ 0 , 0 ] .
+
+  vars A B : Int .
+
+  ***the actions of the problems are coded by defining preconditions and postconditions
+  ***through rewrite terms.
+  crl [fillA] : [ A , B ] => [ 4 , B ] if A < 4 .
+
+  crl [fillB] : [ A , B ] => [ A , 3 ] if B < 3 .
+
+  crl [emptyA] : [ A , B ] => [ 0 , B ] if A > 0 .
+
+  crl [emptyB] : [ A , B ] => [ A , 0 ] if B > 0 .
+
+  crl [Pour_A_in_B] : [ A , B ] => 
+		[ A - min(A , 3 - B ) , B + min(A , 3 - B ) ] if A > 0 and B < 3 .
+		
+  crl [Pour_B_in_A] : [ A , B ] => 
+		[ A + min(B , 4 - A ) , B - min(B , 4 - A ) ] if B > 0 and A < 4 .
+
+endm
+
+*** =>* means applying zero or many rules
+search in bucket : init =>* [ 2 , B ] .

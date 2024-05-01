@@ -1,0 +1,26 @@
+mod EIGHTQUEEN is
+    ***import integer and array predefined types
+    pr INT .
+    pr ARRAY{Int,Int0} .
+
+    ***declare the state
+    sort State .
+    op [_,_,_,_,_,_] : Array{Int,Int0} Array{Int,Int0} Array{Int,Int0} Int Int Int -> State .
+
+    ***declare variables to store columns and diagonals
+    vars cols diag1 diag2 : Array{Int,Int0} .
+    vars queen column nb : Int .
+
+    ***proceed to the next queen
+    crl [Progress] : [ cols , diag1 , diag2 , queen , column , nb ]  =>
+        [ insert(column , queen, cols) , insert(queen + column , 1 , diag1) , insert(queen - column , 1 , diag2) , queen + 1 , 1 , nb ]
+    
+        if cols[column] == 0 /\ diag1[ queen + column ] == 0 /\ diag2[ queen - column ] == 0 .
+
+    ***can't place the current queen, try the next position
+    crl [TryNext] : [ cols , diag1 , diag2 , queen , column , nb ] =>
+        [ cols , diag1 , diag2 , queen , column + 1 , nb ] if column < nb .
+
+endm
+
+search [1] in EIGHTQUEEN : [ empty , empty , empty , 1 , 1 , 8 ] =>* [ cols , diag1 , diag2 , 9 , column , nb ] .

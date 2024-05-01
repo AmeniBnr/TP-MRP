@@ -1,0 +1,17 @@
+mod SORT is
+    pr INT .
+    sort List .
+    subsort Int < List .
+
+    op nil : -> List .
+    op _,_ :  List List -> List [assoc id: nil] .
+
+
+    vars L M N : List .
+    vars A B : Int .
+
+    *** if A comes before B while is greater, then exchange their positions.
+    crl L , A , N , B , M => L , B , N , A , M if A > B .
+endm
+
+search in SORT : 7 , 1 , 4 , 8 , 0 , 2 , 9 , 5 , 3 , 11 ,15 , 13 =>! L .
